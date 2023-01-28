@@ -1,0 +1,2 @@
+ALTER  TABLE users
+    ADD COLUMN currency CHAR(3) NOT NULL ;
