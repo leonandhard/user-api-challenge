@@ -1,14 +1,16 @@
 package co.zip.candidate.userapi.service.impl;
 
-import co.zip.candidate.userapi.dto.CreateUserRequest;
-import co.zip.candidate.userapi.dto.UserResponse;
+import co.zip.candidate.userapi.dto.userDto.CreateUserRequest;
+import co.zip.candidate.userapi.dto.userDto.UserResponse;
 import co.zip.candidate.userapi.exception.UserAlreadyExistException;
 import co.zip.candidate.userapi.exception.UserNotFoundException;
 import co.zip.candidate.userapi.mapper.UserMapper;
 import co.zip.candidate.userapi.model.User;
 import co.zip.candidate.userapi.repository.UserRepository;
 import co.zip.candidate.userapi.service.UserService;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +65,18 @@ public class UserServiceImpl implements UserService {
     return userRepository.findAll()
         .stream().map(userMapper::toResponse).collect(Collectors.toList());
 
+  }
+
+  @Override
+  public Optional<User> validateUserAccountRequirements(Long id) {
+
+    User user = userRepository.findById(id).orElseThrow(() -> {
+      log.info("User with Id: {} not existed", id);
+      return new UserNotFoundException("User not found");
+    });
+
+    return user.getMonthlySalary().subtract(user.getMonthlyExpenses())
+        .compareTo(BigDecimal.valueOf(1000)) >= 0 ? Optional.of(user) : Optional.empty();
   }
 
   private void checkEmail(String email) {

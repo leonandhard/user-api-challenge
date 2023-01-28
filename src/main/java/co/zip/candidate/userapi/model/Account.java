@@ -36,10 +36,12 @@ public class Account {
   private String accountNumber;
 
   @Column(nullable = false)
-  private BigDecimal deposit;
+  @Builder.Default
+  private BigDecimal deposit = BigDecimal.ZERO;
 
   @Column(nullable = false)
-  private BigDecimal credits;
+  @Builder.Default
+  private BigDecimal credits = BigDecimal.ZERO;
 
   @Column(nullable = false)
   private String billingAddress;

@@ -37,6 +37,17 @@ public class ControllerExceptionHandler {
 
   }
 
+  @ExceptionHandler(value = InsufficientMonthlyDepositException.class)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  public ErrorDto handleInsufficientMonthlyDepositException(InsufficientMonthlyDepositException e) {
+
+    return ErrorDto.builder()
+        .errorCode(HttpStatus.FORBIDDEN.value())
+        .details(e.getMessage())
+        .build();
+
+  }
+
   @ExceptionHandler(value = Exception.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ErrorDto handleAllException(Exception e) {

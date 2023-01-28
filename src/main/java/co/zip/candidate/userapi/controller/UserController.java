@@ -1,7 +1,7 @@
 package co.zip.candidate.userapi.controller;
 
-import co.zip.candidate.userapi.dto.CreateUserRequest;
-import co.zip.candidate.userapi.dto.UserResponse;
+import co.zip.candidate.userapi.dto.userDto.CreateUserRequest;
+import co.zip.candidate.userapi.dto.userDto.UserResponse;
 import co.zip.candidate.userapi.service.UserService;
 import java.util.List;
 import javax.validation.Valid;
