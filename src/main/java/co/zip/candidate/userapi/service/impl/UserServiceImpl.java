@@ -3,9 +3,13 @@ package co.zip.candidate.userapi.service.impl;
 import co.zip.candidate.userapi.dto.CreateUserRequest;
 import co.zip.candidate.userapi.dto.UserResponse;
 import co.zip.candidate.userapi.exception.UserAlreadyExistException;
+import co.zip.candidate.userapi.exception.UserNotFoundException;
 import co.zip.candidate.userapi.mapper.UserMapper;
+import co.zip.candidate.userapi.model.User;
 import co.zip.candidate.userapi.repository.UserRepository;
 import co.zip.candidate.userapi.service.UserService;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,9 +30,39 @@ public class UserServiceImpl implements UserService {
 
     checkEmail(createUserRequest.getEmail());
 
-    return userMapper.toDto(userRepository.save(
+    return userMapper.toResponse(userRepository.save(
         userMapper.toEntity(createUserRequest)
     ));
+  }
+
+  @Override
+  public UserResponse getUserById(Long id) {
+
+    User user = userRepository.findById(id).orElseThrow(() -> {
+      log.info("User with Id: {} not existed", id);
+      return new UserNotFoundException("User not found");
+    });
+
+    return userMapper.toResponse(user);
+  }
+
+  @Override
+  public UserResponse getUserByEmail(String email) {
+
+    User user = userRepository.findByEmail(email).orElseThrow(() -> {
+      log.info("User with email: {} not existed", email);
+      return new UserNotFoundException("User not found");
+    });
+
+    return userMapper.toResponse(user);
+  }
+
+  @Override
+  public List<UserResponse> listUsers() {
+
+    return userRepository.findAll()
+        .stream().map(userMapper::toResponse).collect(Collectors.toList());
+
   }
 
   private void checkEmail(String email) {
