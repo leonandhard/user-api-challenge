@@ -1,6 +1,7 @@
 package co.zip.candidate.userapi.util;
 
 import co.zip.candidate.userapi.dto.userDto.CreateUserRequest;
+import co.zip.candidate.userapi.dto.userDto.UserResponse;
 import co.zip.candidate.userapi.model.User;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -41,6 +42,30 @@ public class UserTestHelper {
         .monthlySalary(BigDecimal.valueOf(2000))
         .monthlyExpenses(BigDecimal.valueOf(1000))
         .name("test2")
+        .createdAt(OffsetDateTime.now())
+        .updatedAt(OffsetDateTime.now())
+        .build();
+  }
+
+  public static UserResponse createUserResponse_1() {
+    return UserResponse.builder()
+        .id(2L)
+        .email("test2@gmail.com")
+        .monthlySalary(BigDecimal.valueOf(2000))
+        .monthlyExpenses(BigDecimal.valueOf(1000))
+        .name("test2")
+        .createdAt(OffsetDateTime.now())
+        .updatedAt(OffsetDateTime.now())
+        .build();
+  }
+
+  public static UserResponse createUserResponse_2() {
+    return UserResponse.builder()
+        .id(3L)
+        .email("test3@gmail.com")
+        .monthlySalary(BigDecimal.valueOf(5000))
+        .monthlyExpenses(BigDecimal.valueOf(1000))
+        .name("test3")
         .createdAt(OffsetDateTime.now())
         .updatedAt(OffsetDateTime.now())
         .build();

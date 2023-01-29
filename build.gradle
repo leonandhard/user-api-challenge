@@ -21,6 +21,7 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	testImplementation 'junit:junit:4.13.1'
 
 
 	compileOnly 'org.projectlombok:lombok'

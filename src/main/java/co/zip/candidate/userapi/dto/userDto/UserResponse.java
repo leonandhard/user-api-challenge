@@ -20,7 +20,7 @@ public class UserResponse {
   private String name;
   private String email;
   private BigDecimal monthlySalary;
-  private BigDecimal monthlyExpense;
+  private BigDecimal monthlyExpenses;
   private OffsetDateTime createdAt;
   private OffsetDateTime updatedAt;
 
