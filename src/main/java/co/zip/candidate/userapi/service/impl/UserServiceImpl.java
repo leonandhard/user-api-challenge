@@ -40,12 +40,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserResponse getUserById(Long id) {
 
-    User user = userRepository.findById(id).orElseThrow(() -> {
-      log.info("User with Id: {} not existed", id);
-      return new UserNotFoundException("User not found");
-    });
-
-    return userMapper.toResponse(user);
+    return userMapper.toResponse(getUser(id));
   }
 
   @Override
@@ -70,13 +65,17 @@ public class UserServiceImpl implements UserService {
   @Override
   public Optional<User> validateUserAccountRequirements(Long id) {
 
-    User user = userRepository.findById(id).orElseThrow(() -> {
-      log.info("User with Id: {} not existed", id);
-      return new UserNotFoundException("User not found");
-    });
+    User user = getUser(id);
 
     return user.getMonthlySalary().subtract(user.getMonthlyExpenses())
         .compareTo(BigDecimal.valueOf(1000)) >= 0 ? Optional.of(user) : Optional.empty();
+  }
+
+  private User getUser(Long id) {
+    return userRepository.findById(id).orElseThrow(() -> {
+      log.info("User with Id: {} not existed", id);
+      return new UserNotFoundException("User not found");
+    });
   }
 
   private void checkEmail(String email) {
