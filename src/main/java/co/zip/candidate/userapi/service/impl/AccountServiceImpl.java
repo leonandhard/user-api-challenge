@@ -2,6 +2,7 @@ package co.zip.candidate.userapi.service.impl;
 
 import co.zip.candidate.userapi.dto.accountDto.AccountResponse;
 import co.zip.candidate.userapi.dto.accountDto.CreateAccountRequest;
+import co.zip.candidate.userapi.dto.accountDto.ListAccountsDto;
 import co.zip.candidate.userapi.exception.AccountAlreadyExistException;
 import co.zip.candidate.userapi.exception.InsufficientMonthlyDepositException;
 import co.zip.candidate.userapi.mapper.AccountMapper;
@@ -50,16 +51,23 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public List<AccountResponse> listAccountsById(Long userId) {
-    return accountRepository.findByUserId(userId).stream()
-        .map(accountMapper::toResponse).collect(Collectors.toList());
+  public ListAccountsDto listAccountsById(Long userId) {
+
+
+    return ListAccountsDto.builder()
+        .accountList(accountRepository.findByUserId(userId)
+            .stream().map(accountMapper::toResponse)
+            .collect(Collectors.toList()))
+        .userName(userService.getUserById(userId).getName())
+        .build();
   }
 
   @Override
-  public List<AccountResponse> ListAllAccounts() {
-    return accountRepository.findAll().stream().map(accountMapper::toResponse)
-        .collect(Collectors.toList());
+  public List<ListAccountsDto> ListAllAccounts() {
+    return accountRepository.findDistinctUserIds()
+        .stream().map(this::listAccountsById).collect(Collectors.toList());
   }
+
 
   private void checkAccountExistByContactNumber(String contactNumber) {
     if (accountRepository.existsByContactNumber(contactNumber)) {

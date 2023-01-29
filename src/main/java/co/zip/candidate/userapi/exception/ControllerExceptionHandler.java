@@ -23,6 +23,17 @@ public class ControllerExceptionHandler {
 
   }
 
+  @ExceptionHandler(value = UserNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ErrorDto handleUserNotFoundException(UserNotFoundException e) {
+
+    return ErrorDto.builder()
+        .errorCode(HttpStatus.NOT_FOUND.value())
+        .details(e.getMessage())
+        .build();
+
+  }
+
 
   @ExceptionHandler(value = MethodArgumentNotValidException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
