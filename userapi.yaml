@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: userapi-service
+spec:
+  ports:
+    - protocol: "TCP"
+      name: "rest"
+      port: 8080   # Port inside the cluster
+      targetPort: 8080  # Port exposed to the outside
+  selector:
+    app: userapi
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userapi
+spec:
+  selector:
+    matchLabels:
+      app: userapi
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: userapi
+    spec:
+      containers:
+        - name: userapi
+          image: user:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_URL
+              value: jdbc:postgresql://localhost:5432/postgres
+            - name: DB_USERNAME
+              value: postgres
+            - name: DB_PASSWORD
+              value: YourStrong@Passw0rd
+# This seperator --- below is MANDATORY!!!
+---
