@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: userapi
-          image: user:1.0
+          image: userapi:1.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
